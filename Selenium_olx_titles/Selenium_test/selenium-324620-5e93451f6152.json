@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "selenium-324620",
+  "private_key_id": "5e93451f615272ec2737ac72c44cf84edab7a08f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDy7p66GCWqi5Vp\nLr+Fukzs/YgvPm4pAR3ENFWLy9OlyoLKQ0TeDOc72elo+sswr236hb0wXVRhnMST\niMv1Z42Xc2ZOVC+lDVg+NlUzDE0zcHMY5/80VqkEnoQTQdobiiiqcj8EZumyHz8b\nwipiMMsFMKeV8TkTL7wlHV8a7GYIwymfFNE4SVUpA4YK7mWYxtZ4QgUphiAs7Wzt\n4pItgm7aTX+2pQ/ysltpZYcuMsj81Isrx/r9Ze3gw9peigBwEkxSKLlR8X9zHILv\nxzzk3z9a6546RKTXRCOjcXOt3+U4CQKJG150kpcnre7XFjpyRWqOQP/7dytG8lUV\nxltekoxtAgMBAAECggEAP6cuh+xT0kAIwiqxnESYa3BzAo4FJ1FXj1V3JM4fgs1x\nP7YokVYoMJKEijFMlFEjLAVm8QlDVuBQ0aeCaabcftaJ8/QzF7hLauGpqVqLz/Ki\n9d+0Cu66Eq/GQ5V5pMWqqh6NTIX6reVqD8fsexX13EJHZw5xuglD7yWnCdLvWVPn\nGKHrUoaunnJSR2hNT+a/nOwu3wXOG+vCQXBv1t+4r3Ai9hVs2q1r+INya8vhQqt2\nDdRDYfirkaeke88oaq5R8yUTouO2N1lZAiGkJvm4PBZqWRBcVXPLV3enxc1LftPI\nFclckRinDTC7ZDGDCtHdCN5AGWohLnEce3F8xe81sQKBgQD+romG5eI7pWXDe6Lw\nQ06Awvye69inJVAemlMegRH2nkDkGiKNIWK7QI48RMU/CEIEacq3koBmc3BLg40z\nGYGjNleblD9JmRmfuPwzLJmV92ZsxgIhuOd2oqQQtrJhevEQKVaEZXGBKegvG4xV\nuVQplh3dQyGYoFNfr0fHw6gnKwKBgQD0MIOZNVUDnMRUwGScv2Ahp3/IOmNGFAy5\nw+0smkIVI4c8Kskw0nhBUNzash1gti/D3H2xSTQpHUCfcPecWlc5wQML2hc13Zh/\nsjEYBbTEjdHIsETRJlnNNyRXYA3zMF92Mm1WLRse2VcuwORd1HqWnqPtHazlHQQN\nAaCfikdOxwKBgQDc0YpOm01/d9X3G2DYPxN20xlj1YvAyLph/l6pKTHhCa+r1vk0\nMsk/ICbzHJGFKGzNFMj+R5jqu5aW8tXfg3MCh2CIdY42CvfLpAGPgVEdVSfKkhhR\nEtgl5bipAS9DE+ylnaH1I1u5qRM2nQUdYpYVhKIaMVWU1xXS9dAf5YYLhwKBgQDB\nQGvFonmHhFe0oxZ9Hs/bko4EToEmgtOXaMGZHPPTeuyZ51qWMttNBcvjoDazxTuE\nDEnFNqP7LdVo2aR8rtp9MI1SoeTgkmEQHlvQISPwsjQmWan8xBcp28v9Al3H6q6C\nAmKZYtUl0ue2bp3MzE3ASgh9rZCZOh9sk68k0/CfHQKBgEAPH6sTciYVpx3HRQgr\n9/wx8/SjI+zUSiSofC9Xn8NBJQJsPSpUihsj1YGXaLcLM7eM/h2qPcygNwq6Y9YX\nFvVYpHDA+oG7MIL8IyduZOk1bot9ILiG2oFvW/vZd2rwZgmFmCYyaJU0vj0ZJlci\nx/KBv8MbRKegJmfyusogzBR5\n-----END PRIVATE KEY-----\n",
+  "client_email": "krzysiekrobot@selenium-324620.iam.gserviceaccount.com",
+  "client_id": "111126450745064115314",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/krzysiekrobot%40selenium-324620.iam.gserviceaccount.com"
+}

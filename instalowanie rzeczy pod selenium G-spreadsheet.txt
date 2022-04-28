@@ -1,0 +1,9 @@
+python.exe -m: 
+W CMD:
+	pip install --upgrade selenium	#selenium
+	pip install --upgrade PyOpenSSL	#nie wiem
+	pip install --upgrade oauth2client #jakiś dodatek weryfikujący klucz dostępu aplikacji API
+	pip install --upgrade gspread	#komendy do obsługi arkuszy
+	pip install --upgrade PyDrive	#komendy do obsługi drive
+	pip install --upgrade google-api-python-client	#komendy do logowania się google - autoryzacja
+	pip install --upgrade pygdrive3	#komendy do obsługi google drive
