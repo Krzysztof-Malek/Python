@@ -7,6 +7,9 @@ Błędy:
 Możliwe usprawnienia:
     Można zrobić więcej sprawdzeń czy pewne elementy pojawiają się na stronie/czy można w nie kliknąć zamiast czekania kilku sekund
 """
+    #Polskie znaki
+from __future__ import unicode_literals
+import codecs
 
 import math
 import os
@@ -18,6 +21,7 @@ import shutil   # to save it locally
 import json
 import gspread
 import re   # Biblioteka do używania REGEX
+
     #Google drive
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
@@ -46,7 +50,7 @@ def manual_error_manager():
 
 ###Zmienne do osbługi API sheets/drive
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-credentials = ServiceAccountCredentials.from_json_keyfile_name('selenium-324620-5e93451f6152.json')
+credentials = ServiceAccountCredentials.from_json_keyfile_name('C:/Users/krzys/source/repos/Private/Klucze_do_aplikacji/selenium-324620-5e93451f6152.json')
 
 gc = gspread.authorize(credentials)
 
@@ -54,6 +58,15 @@ gc = gspread.authorize(credentials)
 wks = gc.open_by_key('1EsRk_dSHR074QVpktVUsl2E7yymoeQzjUUZW2XYvDFk').worksheet("Arkusz2")
 gauth = GoogleAuth()
 dc = GoogleDrive(gauth)
+
+#Wzięcie haseł z pliku
+pass_file = codecs.open("C:/Users/krzys/source/repos/Private/Klucze_do_aplikacji/pass_arpex.txt", 'r', 'utf-8')
+Lines = pass_file.readlines()
+
+customer_name = Lines[0].strip()
+user_name = Lines[1].strip()
+password = Lines[2].strip()
+
 
 
     #Jeżeli chcemy tylko dodać linki w kolumnie zdjęcia to if(0):
@@ -73,13 +86,13 @@ if(0):
         )
 
         search = driver.find_element_by_id("customerName-field")
-        search.send_keys("H MEGA TYCHY")
+        search.send_keys(customer_name)
 
         #Wpisanie reszty danych logowania i zaznaczenie wymaganego checkboxa
         search = driver.find_element_by_id("userName-field")
-        search.send_keys("Katarzyna Małek")
+        search.send_keys(user_name)
         search = driver.find_element_by_id("password-field")
-        search.send_keys("arpex")
+        search.send_keys(password)
         search = driver.find_element_by_name("LoginConfirmation")
         search.click()
         time.sleep(3)
