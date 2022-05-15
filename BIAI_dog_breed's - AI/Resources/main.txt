@@ -1,0 +1,246 @@
+#%%
+
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+#from google.colab.patches import cv2_imshow
+import os
+import io
+from PIL import Image
+
+import tensorflow as tf
+from tensorflow.keras import datasets, layers, models
+#import tflite_runtime.interpreter as tflite
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input, decode_predictions
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Input, Lambda, GlobalAveragePooling2D, Dropout, Dense
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras import Model
+
+#%%
+
+img_height = 256
+img_width = 256
+class_folder_paths = ['C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/test/'+x for x in os.listdir('C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/test/')]
+class_folder_paths
+
+#%%
+
+for class_folder_path in class_folder_paths:
+    print('{0}:'.format(class_folder_path), ' ', len(os.listdir(class_folder_path)))
+
+#%%
+
+TRAIN_DIR = 'C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/train/'
+VAL_DIR = 'C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/test/'
+
+#%%
+
+labels = train_generator.class_indices
+class_mapping = dict((v,k) for k,v in labels.items())
+class_mapping
+
+#%%
+
+opt = Adam(learning_rate=0.00001)
+model.compile(optimizer = opt, loss = 'categorical_crossentropy', metrics = ['accuracy'])
+model.build(((None, 224, 224, 3)))
+model.summary()
+
+#%%
+
+#inp1 = cv2.imread('C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/valid/Afghan/01.jpg') #Afghan
+#inp2 = cv2.imread('C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/valid/Boxer/01.jpg') #Boxer
+#inp3 = cv2.imread('C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/valid/Bull Mastiff/01.jpg')
+#inputs = [inp1, inp2, inp3]
+#inputs = [cv2.cvtColor(img, cv2.COLOR_BGR2RGB) for img in inputs]
+#plt.imshow(inputs[0])
+
+#%%
+
+data_dir = 'C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/train/'
+val_dir = 'C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/test/'
+
+#%%
+
+#Tworzenie zbiorów obrazów do treningu i walidacji
+train_ds = tf.keras.utils.image_dataset_from_directory(
+  data_dir)
+
+val_ds = tf.keras.utils.image_dataset_from_directory(
+  val_dir)
+
+#%%
+
+#Pokazanie części obrazów, aby sprawdzić czy się załadowały
+plt.figure(figsize=(100, 100))
+for images, labels in train_ds.take(1):
+  for i in range(9):
+    ax = plt.subplot(3, 3, i + 1)
+    plt.imshow(images[i].numpy().astype("uint8"))
+    plt.title(class_mapping)
+    plt.axis("off")
+
+#%%
+
+for image_batch, labels_batch in train_ds:
+  print(image_batch.shape)
+  print(labels_batch.shape)
+  break
+
+
+#%%
+
+AUTOTUNE = tf.data.AUTOTUNE
+
+train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
+val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+
+#%%
+
+normalization_layer = layers.Rescaling(1./255)
+
+
+#%%
+
+normalized_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
+image_batch, labels_batch = next(iter(normalized_ds))
+first_image = image_batch[0]
+# Notice the pixel values are now in `[0,1]`.
+print(np.min(first_image), np.max(first_image))
+
+#%%
+
+num_classes = len(class_mapping)
+
+model = Sequential([
+  layers.Rescaling(1./255, input_shape=(img_height, img_width, 3)),
+  layers.Conv2D(16, 3, padding='same', activation='relu'),
+  layers.MaxPooling2D(),
+  layers.Conv2D(32, 3, padding='same', activation='relu'),
+  layers.MaxPooling2D(),
+  layers.Conv2D(64, 3, padding='same', activation='relu'),
+  layers.MaxPooling2D(),
+  layers.Flatten(),
+  layers.Dense(128, activation='relu'),
+  layers.Dense(num_classes)
+])
+
+#%%
+
+model.compile(optimizer='adam',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['accuracy'])
+
+#%%
+
+model.summary()
+
+
+#%%
+
+epochs=10
+history = model.fit(
+  train_ds,
+  validation_data=val_ds,
+  epochs=epochs
+)
+
+
+#%%
+
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
+
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+
+epochs_range = range(epochs)
+
+plt.figure(figsize=(8, 8))
+plt.subplot(1, 2, 1)
+plt.plot(epochs_range, acc, label='Training Accuracy')
+plt.plot(epochs_range, val_acc, label='Validation Accuracy')
+plt.legend(loc='lower right')
+plt.title('Training and Validation Accuracy')
+
+plt.subplot(1, 2, 2)
+plt.plot(epochs_range, loss, label='Training Loss')
+plt.plot(epochs_range, val_loss, label='Validation Loss')
+plt.legend(loc='upper right')
+plt.title('Training and Validation Loss')
+plt.show()
+
+
+#%%
+
+img_path = "D:/PENDRIVE/CV/dog5.jpg"
+img = image.load_img(img_path, target_size=(256, 256))
+plt.imshow(img)
+plt.show()
+
+#%%
+
+img_array = image.img_to_array(img)
+img_batch = np.expand_dims(img_array, axis=0)
+img_preprocessed = preprocess_input(img_batch)
+
+#%%
+
+#img = tf.keras.utils.load_img(
+
+#    sunflower_path, target_size=(img_height, img_width))
+
+img_array = tf.keras.utils.img_to_array(img)
+img_array = tf.expand_dims(img_array, 0) # Create a batch
+
+predictions = modelmodel.predict(img_array)
+score = tf.nn.softmax(predictions[0])
+
+print(
+    "This image most likely belongs to {} with a {:.2f} percent confidence."
+    .format(class_mapping[np.argmax(score)], 100 * np.max(score))
+)
+#print(decode_predictions(predictions, top=3)[0])
+
+#%%
+
+#model = tf.keras.applications.resnet50.ResNet50()
+#model = first_model
+predictions = model.predict(img_preprocessed)
+
+#%%
+
+print(decode_predictions(predictions, top=3)[0])
+
+#%%
+
+print(predictions)
+
+#%%
+
+first_model = model
+
+#%%
+
+base_model = model
+# add a global spatial average pooling layer
+x = base_model.output
+#x = GlobalAveragePooling2D()(x)
+# add a fully-connected layer
+x = Dense(1024, activation='relu')(x)
+# and a logistic layer -- let's say we have 7 classes
+predictions = Dense(70, activation='softmax')(x)
+model = Model(inputs=base_model.input, outputs=predictions)
+
+#%%
+
+modelmodel = tf.keras.models.load_model('C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/model')
+
+
+
+
