@@ -22,12 +22,12 @@ def manual_error_manager():
 CHROMEDRIVER_PATH = "C:/Program Files (x86)/chromedriver.exe"
 base_url_square = "https://images.google.com/?q=&tbs=iar:s"
 base_url = "https://www.google.com/search?tbm=isch&q="
-dir_name = "C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/train_v2/"
+dir_name = "C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/train2/"
 extension_name = ".jpg"
 
 # Getting folder paths and names od breeds
-class_folder_paths = ['C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/train_v2/' + x for x in
-                      os.listdir('C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/train_v2/')]
+class_folder_paths = ['C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/train2/' + x for x in
+                      os.listdir('C:/Users/krzys/Desktop/Polibuda/sem. 6/BIAI/archive/train2/')]
 dog_breed_names = []
 for b in class_folder_paths:
     dog_breed_names.append(b.rsplit('/', 1)[1])
@@ -42,6 +42,12 @@ for breed in dog_breed_names:
     # Waiting for page to load
     driver.implicitly_wait(1)
     for i in range(100):  # Getting 100 images
+        if i+1 < 10:
+            number = "00"
+        elif i+1 < 100:
+            number = "0"
+        else:
+            number = ""
         try:
             # Getting next element on page
             css_selector_name = ".isv-r:nth-child(" + str(i + 1) + ") .rg_i"
@@ -49,18 +55,16 @@ for breed in dog_breed_names:
             driver.execute_script("arguments[0].scrollIntoView(true);", img_element)
 
             # Generating name and path for image
-            save_name = dir_name + breed + "/" + str(i + 1) + extension_name
+            save_name = dir_name + breed + "/" + number + str(i + 1) + extension_name
             # Check if not empty
             # print(str(i) + " " + str(img_element.get_attribute('src')))
             if img_element.get_attribute('src'):
                 # Saving image_url from url
                 urllib.request.urlretrieve(img_element.get_attribute('src'), save_name)
                 # Scaling image by width
-                base_width = 224
+                base_width = 256
                 img = Image.open(save_name)
-                w_percent = (base_width / float(img.size[0]))
-                h_size = int((float(img.size[1]) * float(w_percent)))
-                img = img.resize((base_width, h_size), Image.Resampling.LANCZOS)
+                img = img.resize((base_width, base_width), Image.Resampling.LANCZOS)
                 img.save(save_name)
         except:
             pass
